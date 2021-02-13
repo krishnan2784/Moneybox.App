@@ -1,40 +1,39 @@
 ﻿using System;
 using Moneybox.App;
 
-namespace MoneyBoxApp.App.Tests
+namespace MoneyBoxApp.App.Tests.Helpers
 {
     public class UserHelper
     {
-        Guid id = Guid.NewGuid();
-        string name = "";
-        string email = "";
-
+        private string _email = "";
+        private Guid _id = Guid.NewGuid();
+        private string _name = "";
         public static implicit operator User(UserHelper instance)
         {
             return instance.Build();
         }
 
-        public User Build()
+        public UserHelper WithEmail(string email)
         {
-            return new User(id, name, email);
+            _email = email;
+            return this;
         }
 
         public UserHelper WithId(Guid id)
         {
-            this.id = id;
+            _id = id;
             return this;
         }
 
         public UserHelper WithName(string name)
         {
-            this.name = name;
+            _name = name;
             return this;
         }
 
-        public UserHelper WithEmail(string email)
+        private User Build()
         {
-            this.email = email;
-            return this;
+            return new User(_id, _name, _email);
         }
     }
 }

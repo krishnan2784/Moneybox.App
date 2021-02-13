@@ -11,21 +11,17 @@ namespace MoneyBoxApp.App.Tests.Features
 {
     public class TransferMoneyTest
     {
-        private TransferMoney _sut;
+        private readonly Guid _fromAccountId = Guid.NewGuid();
+        private readonly Guid _fromUserId = Guid.NewGuid();
+        private readonly Guid _toAccountId = Guid.NewGuid();
+        private readonly Guid _toUserId = Guid.NewGuid();
+        private AccountHelper _fromAccount;
+        private User _fromUser;
         private Mock<IAccountRepository> _mockAccountRepository;
         private Mock<INotificationService> _mockNotificationService;
-
-        private readonly Guid _fromAccountId = Guid.NewGuid();
-        private readonly Guid _toAccountId = Guid.NewGuid();
-        private readonly Guid _fromUserId = Guid.NewGuid();
-        private readonly Guid _toUserId = Guid.NewGuid();
-
-        private User _fromUser;
-        private User _toUser;
-
-        private AccountHelper _fromAccount;
+        private TransferMoney _sut;
         private AccountHelper _toAccount;
-
+        private User _toUser;
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
@@ -49,6 +45,32 @@ namespace MoneyBoxApp.App.Tests.Features
         }
 
         [Test]
+        public void ShouldCreditToAccount()
+        {
+            Account fromAccount = _fromAccount.WithBalance(5000m);
+            Account toAccount = _toAccount.WithBalance(3000m).WithPaidIn(3000m);
+            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
+            _mockAccountRepository.Setup(m => m.GetAccountById(_toAccountId)).Returns(toAccount);
+
+            _sut.Execute(_fromAccountId, _toAccountId, 250m);
+
+            Assert.AreEqual(3250m, toAccount.Balance);
+            Assert.AreEqual(3250m, toAccount.PaidIn);
+        }
+
+        [Test]
+        public void ShouldDebitFromAccount()
+        {
+            Account fromAccount = _fromAccount.WithBalance(5000m);
+            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
+
+            _sut.Execute(_fromAccountId, _toAccountId, 250m);
+
+            Assert.AreEqual(4750m, fromAccount.Balance);
+            Assert.AreEqual(-250m, fromAccount.Withdrawn);
+        }
+
+        [Test]
         public void ShouldGetFromAccount()
         {
             _sut.Execute(_fromAccountId, _toAccountId, 0m);
@@ -65,9 +87,16 @@ namespace MoneyBoxApp.App.Tests.Features
         }
 
         [Test]
-        public void ShouldThrowExceptionWhenSufficientFundsAreNotAvailable()
+        public void ShouldNotifyWhenApproachingPayInLimit()
         {
-            Assert.Throws<InvalidOperationException>(() => { _sut.Execute(_fromAccountId, _toAccountId, 100m); });
+            Account fromAccount = _fromAccount.WithBalance(5000m);
+            Account toAccount = _toAccount.WithPaidIn(3000m);
+            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
+            _mockAccountRepository.Setup(m => m.GetAccountById(_toAccountId)).Returns(toAccount);
+
+            _sut.Execute(_fromAccountId, _toAccountId, 750m);
+
+            _mockNotificationService.Verify(m => m.NotifyApproachingPayInLimit(_toUser.Email), Times.Once());
         }
 
         [Test]
@@ -93,30 +122,6 @@ namespace MoneyBoxApp.App.Tests.Features
         }
 
         [Test]
-        public void ShouldThrowExceptionWhenPayInLimitIsExceeded()
-        {
-            Account fromAccount = _fromAccount.WithBalance(5000m);
-            Account toAccount = _toAccount.WithPaidIn(3000m);
-            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
-            _mockAccountRepository.Setup(m => m.GetAccountById(_toAccountId)).Returns(toAccount);
-
-            Assert.Throws<InvalidOperationException>(() => { _sut.Execute(_fromAccountId, _toAccountId, 1500m); });
-        }
-
-        [Test]
-        public void ShouldNotifyWhenApproachingPayInLimit()
-        {
-            Account fromAccount = _fromAccount.WithBalance(5000m);
-            Account toAccount = _toAccount.WithPaidIn(3000m);
-            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
-            _mockAccountRepository.Setup(m => m.GetAccountById(_toAccountId)).Returns(toAccount);
-
-            _sut.Execute(_fromAccountId, _toAccountId, 750m);
-
-            _mockNotificationService.Verify(m => m.NotifyApproachingPayInLimit(_toUser.Email), Times.Once());
-        }
-
-        [Test]
         public void ShouldNotNotifyWhenNotApproachingPayInLimit()
         {
             Account fromAccount = _fromAccount.WithBalance(5000m);
@@ -130,31 +135,21 @@ namespace MoneyBoxApp.App.Tests.Features
         }
 
         [Test]
-        public void ShouldDebitFromAccount()
+        public void ShouldThrowExceptionWhenPayInLimitIsExceeded()
         {
             Account fromAccount = _fromAccount.WithBalance(5000m);
-            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
-
-            _sut.Execute(_fromAccountId, _toAccountId, 250m);
-
-            Assert.AreEqual(4750m, fromAccount.Balance);
-            Assert.AreEqual(-250m, fromAccount.Withdrawn);
-        }
-
-        [Test]
-        public void ShouldCreditToAccount()
-        {
-            Account fromAccount = _fromAccount.WithBalance(5000m);
-            Account toAccount = _toAccount.WithBalance(3000m).WithPaidIn(3000m);
+            Account toAccount = _toAccount.WithPaidIn(3000m);
             _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
             _mockAccountRepository.Setup(m => m.GetAccountById(_toAccountId)).Returns(toAccount);
 
-            _sut.Execute(_fromAccountId, _toAccountId, 250m);
-
-            Assert.AreEqual(3250m, toAccount.Balance);
-            Assert.AreEqual(3250m, toAccount.PaidIn);
+            Assert.Throws<InvalidOperationException>(() => { _sut.Execute(_fromAccountId, _toAccountId, 1500m); });
         }
 
+        [Test]
+        public void ShouldThrowExceptionWhenSufficientFundsAreNotAvailable()
+        {
+            Assert.Throws<InvalidOperationException>(() => { _sut.Execute(_fromAccountId, _toAccountId, 100m); });
+        }
         [Test]
         public void ShouldUpdateFromAccount()
         {

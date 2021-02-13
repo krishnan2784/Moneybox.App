@@ -11,8 +11,8 @@ namespace Moneybox.App.Features
 
         public TransferMoney(IAccountRepository accountRepository, INotificationService notificationService)
         {
-            this._accountRepository = accountRepository;
-            this._notificationService = notificationService;
+            _accountRepository = accountRepository;
+            _notificationService = notificationService;
         }
 
         public void Execute(Guid fromAccountId, Guid toAccountId, decimal amount)

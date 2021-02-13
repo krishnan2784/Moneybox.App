@@ -12,14 +12,13 @@ namespace MoneyBoxApp.App.Tests.Features
     [TestFixture]
     public class WithDrawMoneyTest
     {
-        private WithdrawMoney _sut;
-        private Mock<IAccountRepository> _mockAccountRepository;
-        private Mock<INotificationService> _mockNotificationService;
-
         readonly Guid _fromAccountId = Guid.NewGuid();
         readonly Guid _fromUserId = Guid.NewGuid();
-        User _fromUser;
         private AccountHelper _accountHelper;
+        User _fromUser;
+        private Mock<IAccountRepository> _mockAccountRepository;
+        private Mock<INotificationService> _mockNotificationService;
+        private WithdrawMoney _sut;
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
@@ -39,17 +38,23 @@ namespace MoneyBoxApp.App.Tests.Features
         }
 
         [Test]
+        public void ShouldDebitFromAccount()
+        {
+            Account fromAccount = _accountHelper.WithBalance(5000m).WithWithdrawn(0m);
+            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
+
+            _sut.Execute(_fromAccountId, 250m);
+
+            Assert.AreEqual(4750m, fromAccount.Balance);
+            Assert.AreEqual(-250m, fromAccount.Withdrawn);
+        }
+
+        [Test]
         public void ShouldGetFromAccount()
         {
             _sut.Execute(_fromAccountId, 0m);
 
             _mockAccountRepository.Verify(m => m.GetAccountById(_fromAccountId), Times.Once());
-        }
-
-        [Test]
-        public void ShouldThrowExceptionWhenSufficientFundsAreNotAvailable()
-        {
-            Assert.Throws<InvalidOperationException>(() => { _sut.Execute(_fromAccountId, 100m); });
         }
 
         [Test]
@@ -75,17 +80,10 @@ namespace MoneyBoxApp.App.Tests.Features
         }
 
         [Test]
-        public void ShouldDebitFromAccount()
+        public void ShouldThrowExceptionWhenSufficientFundsAreNotAvailable()
         {
-            Account fromAccount = _accountHelper.WithBalance(5000m).WithWithdrawn(0m);
-            _mockAccountRepository.Setup(m => m.GetAccountById(_fromAccountId)).Returns(fromAccount);
-
-            _sut.Execute(_fromAccountId, 250m);
-
-            Assert.AreEqual(4750m, fromAccount.Balance);
-            Assert.AreEqual(-250m, fromAccount.Withdrawn);
+            Assert.Throws<InvalidOperationException>(() => { _sut.Execute(_fromAccountId, 100m); });
         }
-
         [Test]
         public void ShouldUpdateFromAccount()
         {
