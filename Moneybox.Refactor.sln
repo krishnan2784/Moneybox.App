@@ -3,18 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moneybox.App", "Moneybox.App\Moneybox.App.csproj", "{C1E5082E-45D6-469C-BD08-B87348851443}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{FA6E405B-DCF2-4C61-8901-965C45423CC4}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBoxApp.App.Tests", "MoneyBoxApp.App.Tests\MoneyBoxApp.App.Tests.csproj", "{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{55155A5D-E254-4B50-9DE3-378EA5552CEF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{363C2886-C4BD-4BDD-A987-6E35E0E2B463}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moneybox.App", "src\Moneybox.App\Moneybox.App.csproj", "{889C1FFE-64D3-4DB5-9066-F283CDD00AB0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBoxApp.App.Tests", "src\MoneyBoxApp.App.Tests\MoneyBoxApp.App.Tests.csproj", "{3B38B7C2-518E-4FE2-BB2B-21855FD84EE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,21 +22,21 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C1E5082E-45D6-469C-BD08-B87348851443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1E5082E-45D6-469C-BD08-B87348851443}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1E5082E-45D6-469C-BD08-B87348851443}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1E5082E-45D6-469C-BD08-B87348851443}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889C1FFE-64D3-4DB5-9066-F283CDD00AB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889C1FFE-64D3-4DB5-9066-F283CDD00AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889C1FFE-64D3-4DB5-9066-F283CDD00AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889C1FFE-64D3-4DB5-9066-F283CDD00AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B38B7C2-518E-4FE2-BB2B-21855FD84EE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B38B7C2-518E-4FE2-BB2B-21855FD84EE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B38B7C2-518E-4FE2-BB2B-21855FD84EE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B38B7C2-518E-4FE2-BB2B-21855FD84EE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C1E5082E-45D6-469C-BD08-B87348851443} = {363C2886-C4BD-4BDD-A987-6E35E0E2B463}
-		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED} = {55155A5D-E254-4B50-9DE3-378EA5552CEF}
+		{889C1FFE-64D3-4DB5-9066-F283CDD00AB0} = {363C2886-C4BD-4BDD-A987-6E35E0E2B463}
+		{3B38B7C2-518E-4FE2-BB2B-21855FD84EE9} = {55155A5D-E254-4B50-9DE3-378EA5552CEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BBC44E4-088E-4757-B143-20E33390DC00}
