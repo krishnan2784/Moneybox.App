@@ -10,6 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBoxApp.App.Tests", "MoneyBoxApp.App.Tests\MoneyBoxApp.App.Tests.csproj", "{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{55155A5D-E254-4B50-9DE3-378EA5552CEF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{363C2886-C4BD-4BDD-A987-6E35E0E2B463}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +26,17 @@ Global
 		{C1E5082E-45D6-469C-BD08-B87348851443}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1E5082E-45D6-469C-BD08-B87348851443}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1E5082E-45D6-469C-BD08-B87348851443}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C1E5082E-45D6-469C-BD08-B87348851443} = {363C2886-C4BD-4BDD-A987-6E35E0E2B463}
+		{E8B7F011-B9E3-4201-9F12-2551DF1B58ED} = {55155A5D-E254-4B50-9DE3-378EA5552CEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BBC44E4-088E-4757-B143-20E33390DC00}
