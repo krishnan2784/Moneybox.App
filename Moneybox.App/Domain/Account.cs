@@ -4,18 +4,17 @@ namespace Moneybox.App
 {
     public class Account
     {
-        public const decimal LowFundsWarningAmount = 500m;
-        public const decimal PayInLimit = 4000m;
-        public const decimal PayInLimitApproachWarningAmount = 500m;
-        public Account(Guid id, User user, decimal balance, decimal withdrawn, decimal paidIn)
+        public Account(Guid id, User user, decimal balance, decimal withdrawn, decimal paidIn, AccountSettings accountSettings)
         {
             Id = id;
             User = user;
             Balance = balance;
             Withdrawn = withdrawn;
             PaidIn = paidIn;
+            AccountSettings = accountSettings;
         }
 
+        public AccountSettings AccountSettings { get; set; }
         public decimal Balance { get; set; }
         public Guid Id { get; set; }
 
@@ -26,7 +25,7 @@ namespace Moneybox.App
         
         public bool CanCredit(decimal amount)
         {
-            return PaidIn + amount <= PayInLimit;
+            return PaidIn + amount <= AccountSettings.PayInLimit;
         }
 
         public void Credit(decimal amount)
@@ -42,7 +41,7 @@ namespace Moneybox.App
 
         public void EnsurePayInLimitIsNotExceeded(decimal amount)
         {
-            if (amount > PayInLimit)
+            if (PaidIn + amount > AccountSettings.PayInLimit)
             {
                 throw new InvalidOperationException("Account pay in limit reached");
             }
@@ -58,11 +57,11 @@ namespace Moneybox.App
 
         public bool IsApproachingPayInLimit(decimal amount)
         {
-            return PayInLimit - PaidIn - amount < PayInLimitApproachWarningAmount;
+            return AccountSettings.PayInLimit - PaidIn - amount < AccountSettings.PayInLimitApproachWarningAmount;
         }
         public bool IsExceedingLowFundsLimitAmount(decimal amount)
         {
-            return Balance - amount < LowFundsWarningAmount;
+            return Balance - amount < AccountSettings.LowFundsWarningAmount;
         }
     }
 }

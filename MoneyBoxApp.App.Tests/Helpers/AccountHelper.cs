@@ -1,15 +1,16 @@
 ﻿using System;
 using Moneybox.App;
 
-namespace MoneyBoxApp.App.Tests
+namespace MoneyBoxApp.App.Tests.Helpers
 {
     public class AccountHelper
     {
         private Guid _id = Guid.NewGuid();
         private User _user = new User(Guid.NewGuid(), "", "");
-        private decimal _balance = 0;
-        private decimal _withdrawn = 0;
-        private decimal _paidIn = 0;
+        private readonly AccountSettings _accountSettings = new AccountSettings(500m, 4000m, 500m);
+        private decimal _balance;
+        private decimal _withdrawn;
+        private decimal _paidIn;
 
         public static implicit operator Account(AccountHelper instance)
         {
@@ -18,7 +19,7 @@ namespace MoneyBoxApp.App.Tests
 
         private Account Build()
         {
-            return new Account(_id, _user, _balance, _withdrawn, _paidIn);
+            return new Account(_id, _user, _balance, _withdrawn, _paidIn, _accountSettings);
         }
 
         public AccountHelper WithId(Guid id)
