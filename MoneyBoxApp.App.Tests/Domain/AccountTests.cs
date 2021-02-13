@@ -1,5 +1,6 @@
 using System;
 using Moneybox.App;
+using MoneyBoxApp.App.Tests.Helpers;
 using NUnit.Framework;
 
 namespace MoneyBoxApp.App.Tests.Domain
